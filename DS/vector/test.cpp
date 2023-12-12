@@ -20,8 +20,15 @@ int main()
 	cout << "\nV: ";
 	for (auto v : V)
 		cout << v << " ";
+	sort(V.begin(), V.end());	//test sort
 	cout << "\nV duyet nguoc : ";
 	for (Vector<int>::reverse_iterator it2 = V.r_begin(); it2 != V.r_end(); it2++)
 		cout << *it2 << " ";
+	V.clear();
 
+	cout << "\nAfter clear: ";
+	V.push_back(1);
+	V.push_back(2);
+	for (Vector<int>::reverse_iterator it2 = V.r_begin(); it2 != V.r_end(); it2++)
+		cout << *it2 << " ";
 }

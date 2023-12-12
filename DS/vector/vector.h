@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-//size, empty, push_back, pop_back, back, front, [],  resize, insert, erase, iterator
+
         template <class T>
         class rev_it
         {
@@ -56,9 +56,9 @@ class Vector
         int n, cap;  //n - size, cap - capacity
 
 
-        void expand(int newCap)
+        void expand(int newCap)         //use when need to expand the capacity
         {
-            if(cap > newCap) return;
+            if(cap > newCap) return;    //if newCap is less than cap
             cap = newCap;
             T* temp = list;
             list = new T[cap];
@@ -93,7 +93,8 @@ class Vector
             return list-1;
         }
         
-        Vector<T>& operator = (const Vector<T>& other)
+
+        Vector<T>& operator = (const Vector<T>& other)      //assign operator
         {
             n = other.n;
             cap = other.cap;
@@ -112,7 +113,7 @@ class Vector
             else
                 this->list = nullptr;
             
-            return *this;
+            return *this;           //this is a pointer, so *this is value, combine with Vector<T>&, function return a reference
         }     
         
         Vector()
@@ -120,7 +121,7 @@ class Vector
             n = cap = 0;
             list = nullptr;
         }
-        Vector(int N, T val)
+        Vector(int N, T val = 0)
         {
             n = cap = 0;
             list = nullptr;
@@ -130,8 +131,7 @@ class Vector
             {
                 list[i] = val;
             }
-        }     
-        
+        }       
         Vector(const Vector& other)
         {
             *this = other;
@@ -153,7 +153,7 @@ class Vector
         {
             return n == 0;
         }
-        void resize(int newSize, T val = 0)
+        void resize(int newSize, T val = 0)         //update size (n), not cap
         {
             expand(newSize);
             for(int i = n; i < newSize; i++)
@@ -162,12 +162,16 @@ class Vector
             }
             n = newSize;
         }
-        
+        void reserve(int newCap)        //update cap
+        {
+            expand(newCap);
+        }
+
         T& operator [] (int index) const
         {
             return list[index];
         }
-        T& at(int index) const
+        T& at(int index) const      //same as []
         {
             return list[index];
         }
@@ -214,9 +218,10 @@ class Vector
             }
             n--;
         }
-        void clear()
+        void clear()    //delete all contents of vector
         {
             delete [] list;
+            list = nullptr;
             n = cap = 0;
         }
 
