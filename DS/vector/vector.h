@@ -5,7 +5,48 @@
 using namespace std;
 
 //size, empty, push_back, pop_back, back, front, [],  resize, insert, erase, iterator
+        template <class T>
+        class rev_it
+        {
+            private:
+                T* cur;
+        
+            public:
+            T* getCur()
+            {
+                return cur;
+            }
 
+            rev_it(T *c = nullptr)
+            {
+                cur = c;
+            }
+
+            rev_it& operator = (rev_it<T> ri)
+            {
+                cur = ri.cur;
+            }
+
+            T& operator * ()
+            {
+                return *cur;
+            }
+
+            rev_it<T> operator ++ ()
+            {
+                return --cur;
+            }
+
+            rev_it<T> operator ++ (int)
+            {
+                return cur--;
+            }
+
+            bool operator != (rev_it<T> ri) 
+            {
+                return cur != ri.getCur();
+            }
+        };
 
 template<class T>
 class Vector
@@ -15,23 +56,170 @@ class Vector
         int n, cap;  //n - size, cap - capacity
 
 
-    public:
-        //Constructor
-        Vector();   //default constructor, construct an empty vector
-        Vector(int n, T val);  //fill constructor, n elements (val)
-        Vector(const Vector& other); //copy constructor
+        void expand(int newCap)
+        {
+            if(cap > newCap) return;
+            cap = newCap;
+            T* temp = list;
+            list = new T[cap];
+            for(int i = 0; i < n; i++)
+            {
+                list[i] = temp[i];
+            }
+            if(temp) delete[] temp;
+        }
 
+
+    public:
+
+        //iterator
+        typedef T* iterator;
+        iterator begin()
+        {
+            return list;
+        }
+        iterator end()
+        {
+            return list+n;
+        }
+
+        typedef rev_it<T> reverse_iterator;
+        reverse_iterator r_begin()
+        {
+            return list+n-1;
+        }
+        reverse_iterator r_end()
+        {
+            return list-1;
+        }
+        
+        Vector<T>& operator = (const Vector<T>& other)
+        {
+            n = other.n;
+            cap = other.cap;
+            
+            if(this->list)
+                delete [] this->list;
+            
+            if(cap > 0)
+            {
+                this->list = new T[n];
+                for(int i = 0; i < n; i++)
+                {
+                    this->list[i] = other.list[i];
+                }
+            }
+            else
+                this->list = nullptr;
+            
+            return *this;
+        }     
+        
+        Vector()
+        {
+            n = cap = 0;
+            list = nullptr;
+        }
+        Vector(int N, T val)
+        {
+            n = cap = 0;
+            list = nullptr;
+            expand(N);
+            n = N;
+            for(int i = 0; i < n; i++)
+            {
+                list[i] = val;
+            }
+        }     
+        
+        Vector(const Vector& other)
+        {
+            *this = other;
+        } //copy constructor
+        ~Vector()
+        {
+            delete [] list;
+        }
+
+        int size() const
+        {
+            return n;
+        }
+        int capacity() const
+        {
+            return cap;
+        }
+        bool empty() const
+        {
+            return n == 0;
+        }
+        void resize(int newSize, T val = 0)
+        {
+            expand(newSize);
+            for(int i = n; i < newSize; i++)
+            {
+                list[i] = val;
+            }
+            n = newSize;
+        }
+        
+        T& operator [] (int index) const
+        {
+            return list[index];
+        }
+        T& at(int index) const
+        {
+            return list[index];
+        }
+        T& back() const
+        {
+            return list[n - 1];
+        }
+        T& front() const
+        {
+            return list[0];
+        }
+
+        void push_back(T val)
+        {
+            if(n == cap)
+                expand(cap*2 + 5);
+            list[n++] = val;
+        }
+        void pop_back()
+        {
+            n--;
+        }        
+        void insert(iterator &it, T x)
+        {
+            if(n == cap)
+            {
+                int k = it - list;
+                expand(cap*2 + 5);
+                it = list + k;
+            }
+
+            for(iterator it2 = list + n - 1; it2 >= it; it2--)
+            {
+                *(it2 + 1) = *it2;
+            }
+            *(it++) = x;
+            n++;
+        }
+        void erase(iterator it)
+        {
+            for(iterator it2 = it; it2 != end(); it2++)
+            {
+                *(it2) = *(it2 + 1);
+            }
+            n--;
+        }
+        void clear()
+        {
+            delete [] list;
+            n = cap = 0;
+        }
 
 };
-
-
-template<class T>
-Vector<T>::Vector()
-{
-    n = cap = 0;
-    list = nullptr;
-}
-
-
 
 #endif
