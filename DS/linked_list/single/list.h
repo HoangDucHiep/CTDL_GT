@@ -94,6 +94,16 @@ class List
             head = tail = nullptr;
         }
 
+        List(int k, T v = 0)
+        {
+            n = 0;
+            head = tail = nullptr;
+            while(k--)
+            {
+                push_front();
+            }
+        }
+
         ~List()
         {
             clear();
