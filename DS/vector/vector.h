@@ -42,6 +42,11 @@ using namespace std;
                 return cur--;
             }
 
+            rev_it<T> operator + (int n)
+            {
+                return this->cur - n;
+            }
+
             bool operator != (rev_it<T> ri) 
             {
                 return cur != ri.getCur();

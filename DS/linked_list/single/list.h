@@ -120,37 +120,37 @@ class List
 
         void push_back(T value)
         {
-            if(n==0)
+            if(n==0)    //neu rong, push_front
             {
                 push_front(value);
             }
             else
             {
-                node<T> *newNode = new node<T>(value);
-                tail = tail->next = newNode;
+                node<T> *newNode = new node<T>(value);      //tao node moi
+                tail = tail->next = newNode;    //cho node moi vao cuoi, tail tro toi node moi
                 n++;
             }
         }
         void push_front(T value)
         {
-            head = new node<T>(value, head);
-            if(n == 0)
+            head = new node<T>(value, head);        //tao node moi, next tro toi head, head tro toi node moi
+            if(n == 0)  return;     //neu rong, tail va head cung vi tri 
             {
                 tail = head;
             }
             n++;
         }
 
-        void pop_back()
+        void pop_back()         //if there is just 1 elem, delete the node, set head and tail.
         {
-            if(n==1) {delete head; head=tail=0;}
+            if(n==1) {delete head; head=tail=nullptr;}
             else
             {
-                node<T>*p=head;
-                while(p->next!=tail) p=p->next;
-                delete tail;
-                tail=p; 
-                tail->next=0;
+                node<T>*p=head;             //pointer for loop
+                while(p->next!=tail) p=p->next;         //loop until the node right before tail
+                delete tail;        //delete tail
+                tail=p;     //tail points to p
+                tail->next=nullptr;     //set null for next
             }
             n--;
         }
@@ -158,7 +158,7 @@ class List
 
         void pop_front()
         {
-            node<T> *temp = head;
+            node<T> *temp = head;       
             head = head->next;
             delete temp;
             n--;
@@ -166,7 +166,7 @@ class List
         }
 
         template <class K = less<T>>
-        void sort(K cmp = less<T>())
+        void sort(K cmp = less<T>())        //bubble sort
         {
             for(node<T>* p = head; p != tail; p = p->next)
             {
@@ -180,20 +180,22 @@ class List
             }
         }
 
-        void insert(iterator it, T value)
+        void insert(iterator it, T value)   //insert.png
         {
             node<T> *temp = it.cur;
-            temp->next = new node<T>(temp->value, temp->next);
+            temp->next = new node<T>(temp->value, temp->next);      
             temp->value = value;
             n++;
         }
-        void erase(iterator it)
+
+
+        void erase(iterator it)     //erase.png
         {
             if(it.cur==head) return pop_front();
             if(it.cur==tail) return pop_back();
-            node<T>*p=head,*q=it.cur;
-            while(p->next!=q) p=p->next;
-            p->next=q->next;
+            node<T>*p=head,*q=it.cur;       
+            while(p->next!=q) p=p->next;    //loop until the node next to iterator
+            p->next=q->next;    
             delete q;
             n--;
         }
