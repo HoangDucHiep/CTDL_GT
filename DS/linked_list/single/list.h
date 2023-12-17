@@ -144,7 +144,7 @@ class List
         void push_front(T value)
         {
             head = new node<T>(value, head);        //tao node moi, next tro toi head, head tro toi node moi
-            if(n == 0)  return;     //neu rong, tail va head cung vi tri 
+            if(n == 0)     //neu rong, tail va head cung vi tri 
             {
                 tail = head;
             }
