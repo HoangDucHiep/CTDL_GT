@@ -100,7 +100,7 @@ class List
             head = tail = nullptr;
             while(k--)
             {
-                push_front();
+                push_front(v);
             }
         }
 
